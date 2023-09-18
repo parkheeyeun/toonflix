@@ -1,56 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:toonflix/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  int count = 0;
-
-  void onclick() {
-    setState(() {
-      count = count + 1;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFFF4EDDB),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Click Count!',
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              Text(
-                '$count',
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              IconButton(
-                onPressed: onclick,
-                icon: const Icon(
-                  Icons.add_box_rounded,
-                ),
-              )
-            ],
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            backgroundColor: const Color(0xFFE7626C),
           ),
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(
+              color: Color(0xFF232B55),
+            ),
+          ),
+          cardColor: const Color(0xFFF4EDDB),
         ),
-      ),
-    );
+        home: const HomeScreen());
   }
 }
