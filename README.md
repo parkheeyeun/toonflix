@@ -15,5 +15,8 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-# 이미지가 불러지지 않을때 
+## 이미지가 불러지지 않을때 
 flutter run -d chrome --web-renderer html 를 터미널에서 실행한다
+
+## overflow 문제해결
+SingleChildScrollView로 감싸준다
