@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:toonflix/models/webtoon_detail.dart';
 import 'package:toonflix/models/webtoon_episode.dart';
 import 'package:toonflix/services/api_service.dart';
+import 'package:toonflix/widgets/episode_widget.dart';
 import 'package:toonflix/widgets/webtoon_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -116,33 +119,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     return Column(
                       children: [
                         for (var episode in snapshot.data!)
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 0),
-                                      color: Colors.black.withOpacity(0.5))
-                                ],
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.shade300.withOpacity(0.7)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    episode.title,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                  const Icon(Icons.chevron_right)
-                                ],
-                              ),
-                            ),
-                          ),
+                          Episode(episode: episode, webtoonId: widget.id),
                       ],
                     );
                   }
