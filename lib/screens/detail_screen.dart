@@ -3,9 +3,7 @@ import 'package:toonflix/models/webtoon_detail.dart';
 import 'package:toonflix/models/webtoon_episode.dart';
 import 'package:toonflix/services/api_service.dart';
 import 'package:toonflix/widgets/episode_widget.dart';
-import 'package:toonflix/widgets/webtoon_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
@@ -24,12 +22,44 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetail> webtoon;
   late Future<List<WebtoonEpisode>> episodes;
+  late SharedPreferences pref;
+  bool isLiked = false;
+
+  Future initPref() async {
+    pref = await SharedPreferences.getInstance();
+    final likeToon = pref.getStringList('likeToon');
+    if (likeToon != null) {
+      if (likeToon.contains(widget.id) == true) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      await pref.setStringList('likeToon', []);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     webtoon = ApiService.getById(widget.id);
     episodes = ApiService.getLastEpi(widget.id);
+    initPref();
+  }
+
+  onlike() async {
+    final likeToon = pref.getStringList('likeToon');
+    if (likeToon != null) {
+      if (isLiked) {
+        likeToon.remove(widget.id);
+      } else {
+        likeToon.add(widget.id);
+      }
+      await pref.setStringList('likeToon', likeToon);
+      setState(() {
+        isLiked != isLiked;
+      });
+    }
   }
 
   @override
@@ -48,6 +78,14 @@ class _DetailScreenState extends State<DetailScreen> {
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.green,
+        actions: [
+          IconButton(
+            onPressed: onlike,
+            icon: Icon(
+              isLiked ? Icons.favorite : Icons.favorite_outline,
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
